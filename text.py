@@ -28,17 +28,18 @@ def run_action(action, val, wait=0, shot=None, **kwargs):
 
 def find_and_click(image, wait=0, clicks=1):
     """Locates an image and clicks it. Returns True if found."""
-    try:
-        loc = pyautogui.locateCenterOnScreen(image, confidence=0.8)
-        if loc:
-            print(f"Clicked {image} at {loc}")
-            # interval=1 ensures 1 second pause between double clicks if clicks=2
-            pyautogui.click(loc, clicks=clicks, interval=1) 
-            time.sleep(wait)
-            return True
-    except Exception:
-        print(f"Exception in finding image {image}: e ")
-    return False
+    for confi in [0.8,0.5,0.3]:
+        try:
+            loc = pyautogui.locateCenterOnScreen(image, confidence=confi)
+            if loc:
+                print(f"Clicked {image} at {loc}")
+                # interval=1 ensures 1 second pause between double clicks if clicks=2
+                pyautogui.click(loc, clicks=clicks, interval=1) 
+                time.sleep(wait)
+                return True
+        except Exception:
+            print(f"Exception in finding image {image}: {e} ")
+        return False
 
 def launch_app(name):
     """Launches an exe and waits."""
