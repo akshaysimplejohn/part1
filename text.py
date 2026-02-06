@@ -28,7 +28,7 @@ def run_action(action, val, wait=0, shot=None, **kwargs):
 
 def find_and_click(image, wait=0, clicks=1):
     """Locates an image and clicks it. Returns True if found."""
-    for confi in [0.8,0.5,0.3]:
+    for confi in [0.8,0.5]:
         try:
             loc = pyautogui.locateCenterOnScreen(image, confidence=confi)
             if loc:
@@ -89,6 +89,7 @@ third_steps = [
     ('write', "newsletter0718"+"@"+"gmail.com", 0, None, {}),
     ('press', 'tab', 0, None, {}),
     ('write', "NewsEarn"+"@"+"23#", 1, None, {}),
+    ('press', 'tab', 1, None, {}),
     ('press', 'tab', 1, None, {}),
     ('press', 'enter', 10, "3.png", {}),
 ]
