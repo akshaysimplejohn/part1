@@ -37,9 +37,9 @@ def find_and_click(image, wait=0, clicks=1):
                 pyautogui.click(loc, clicks=clicks, interval=1) 
                 time.sleep(wait)
                 return True
-        except Exception:
+        except Exception as e:
             print(f"Exception in finding image {image}: {e} ")
-        return False
+    return False
 
 def launch_app(name):
     """Launches an exe and waits."""
