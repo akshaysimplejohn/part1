@@ -37,7 +37,7 @@ def find_and_click(image, wait=0, clicks=1):
             time.sleep(wait)
             return True
     except Exception:
-        pass # Image not found
+        print(f"Exception in finding image {image}: e ")
     return False
 
 def launch_app(name):
@@ -76,22 +76,6 @@ first_steps = [
 # Run the sequence
 for step in first_steps: run_action(*step)
 
-# === PART 2: Second APP ===
-launch_app("install-2.exe")
-# Steps: (Action, Value, Wait, Screenshot, OptionalArgs)
-second_steps = [
-    ('press', 'tab', 1, None),
-    ('write', 'zPeYuQdg5Dj0UsxrGv038ARbngn+Tnwo8y6Y7S8iJ3w=', 0, "2a.png")
-]
-
-for step in second_steps: run_action(*step)
-
-# Image Check for Second App
-if find_and_click("install-21.png", wait=10):
-    pass 
-run_action(None, None, wait=0, shot="2b.png")
-
-
 # === PART 3: Third APP ===
 launch_app("install-1.exe")
 
@@ -118,5 +102,20 @@ find_and_click("install-11.png", wait=10, clicks=1)
 run_action(None, None, wait=0, shot="3c.png")
 find_and_click("install-11.png", wait=10, clicks=1)
 run_action(None, None, wait=0, shot="3d.png")
+
+# === PART 2: Second APP ===
+launch_app("install-2.exe")
+# Steps: (Action, Value, Wait, Screenshot, OptionalArgs)
+second_steps = [
+    ('press', 'tab', 1, None),
+    ('write', 'zPeYuQdg5Dj0UsxrGv038ARbngn+Tnwo8y6Y7S8iJ3w=', 0, "2a.png")
+]
+
+for step in second_steps: run_action(*step)
+
+# Image Check for Second App
+if find_and_click("install-21.png", wait=10):
+    pass 
+run_action(None, None, wait=0, shot="2b.png")
 
 print("Automation completed successfully!")
