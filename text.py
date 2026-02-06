@@ -80,8 +80,8 @@ for step in first_steps: run_action(*step)
 launch_app("install-2.exe")
 # Steps: (Action, Value, Wait, Screenshot, OptionalArgs)
 second_steps = [
-    ('press', 'tab', 1, None, {}),
-    ('write', 'zPeYuQdg5Dj0UsxrGv038A'+'Rbngn+Tnwo8y6Y7S8iJ3w=', 0, "2a.png", {})
+    ('press', 'tab', 1, None),
+    ('write', 'zPeYuQdg5Dj0UsxrGv038ARbngn+Tnwo8y6Y7S8iJ3w=', 0, "2a.png")
 ]
 
 for step in second_steps: run_action(*step)
@@ -108,7 +108,8 @@ third_steps = [
     ('press', 'enter', 10, "3.png", {}),
 ]
 
-for step in first_steps: run_action(*step)
+for action, val, wait, shot, kwargs in third_steps:
+    run_action(action, val, wait, shot, **kwargs)
 
 # Image Check for First App (Clicks twice with 1s interval)
 find_and_click("install-10.png", wait=10, clicks=1)
