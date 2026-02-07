@@ -2,11 +2,11 @@ import subprocess, sys, time, os
 
 # --- 1. SETUP & DEPENDENCIES ---
 # Added 'opencv-python' (Required for confidence parameter in locateCenterOnScreen)
-pkgs = ['pywinauto', 'pywin32', 'comtypes', 'pyautogui', 'Pillow', 'opencv-python']
+pkgs = ['pywinauto', 'pywin32', 'comtypes', 'pyautogui', 'Pillow', 'opencv-python','pydirectinput']
 try:
     print("Checking dependencies...")
     subprocess.check_call([sys.executable, '-m', 'pip', 'install'] + pkgs)
-    import pyautogui
+    import pyautogui,pydirectinput
 except Exception as e:
     sys.exit(f"Setup failed: {e}")
 
@@ -17,7 +17,16 @@ os.makedirs(SCREEN_DIR, exist_ok=True)
 def run_action(action, val, wait=0, shot=None, **kwargs):
     """Handles key presses, writing text, and screenshots."""
     if action == 'press': pyautogui.press(val, **kwargs)
-    elif action == 'write': pyautogui.write(val)
+    elif action == 'write': 
+        if val=="@":  # Special case for '@' key
+            pydirectinput.keyDown('shift')
+            pydirectinput.press('2')
+            pydirectinput.keyUp('shift')
+        elif val=="enter":
+            pydirectinput.press('enter')
+        else:   
+            pyautogui.write(val)
+    elif action == 'hotkey': pyautogui.hotkey(*val)
     
     if wait > 0: time.sleep(wait)
     
@@ -86,31 +95,32 @@ third_steps = [
     ('press', 'tab', 1, None, {}),
     ('press', 'enter', 1, None, {}),
     ('press', 'tab', 0, None, {'presses': 3, 'interval': 0.5}),
-    ('write', "newsletter0718"+"@"+"gmail.com", 0, None, {}),
+    ('write', "newsletter0718", 0, None, {}),
+    ('write', "@", 0, None, {}),  # '@' key
+    ('write', "gma"+"il.com", 1, None, {}),
     ('press', 'tab', 0, None, {}),
-    ('write', "NewsEarn"+"@"+"23#", 1, None, {}),
-    ('press', 'tab', 1, None, {}),
+    ('write', "ear", 1, None, {}),
+    ('write', "nnews", 0, None, {}),  # '@' key
+    ('write', "fm478", 1, None, {}),
     ('press', 'tab', 1, None, {}),
     ('press', 'enter', 10, "3.png", {}),
 ]
 
 for action, val, wait, shot, kwargs in third_steps:
     run_action(action, val, wait, shot, **kwargs)
-
-# Image Check for First App (Clicks twice with 1s interval)
-find_and_click("install-10.png", wait=10, clicks=1)
+    
+pyautogui.click(501, 419)
 run_action(None, None, wait=0, shot="3b.png")
-find_and_click("install-11.png", wait=10, clicks=1)
+pyautogui.click(791, 154)
 run_action(None, None, wait=0, shot="3c.png")
-find_and_click("install-11.png", wait=10, clicks=1)
-run_action(None, None, wait=0, shot="3d.png")
 
 # === PART 2: Second APP ===
 launch_app("install-2.exe")
 # Steps: (Action, Value, Wait, Screenshot, OptionalArgs)
 second_steps = [
     ('press', 'tab', 1, None),
-    ('write', 'zPeYuQdg5Dj0UsxrGv038ARbngn+Tnwo8y6Y7S8iJ3w=', 0, "2a.png")
+    ('write', 'zPeYuQdg5Dj0UsxrGv038A'),
+    ('write', 'Rbngn+Tnwo8y6Y7S8iJ3w=', 0, "2a.png")
 ]
 
 for step in second_steps: run_action(*step)
